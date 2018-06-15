@@ -92,7 +92,7 @@ class ProjectList extends Paginated {
             return (<div className="project-list">
                 <ErrorMessage bind={[this, 'error']} />
                 <Paginator className="text-right" {...this.state.pagination} {...this.props}>
-                    <ul className={"list-group project-list " + (this.state.refreshing ? "refreshing" : "")}>
+                    {/* <ul className={"list-group project-list " + (this.state.refreshing ? "refreshing" : "")}> */}
                         {this.state.projects.map(p => (
                             <ProjectListItem 
                                 key={p.id} 
@@ -100,7 +100,7 @@ class ProjectList extends Paginated {
                                 onDelete={this.handleDelete} 
                                 history={this.props.history} /> 
                         ))}
-                    </ul>
+                    {/* </ul> */}
                 </Paginator>
             </div>);
         }

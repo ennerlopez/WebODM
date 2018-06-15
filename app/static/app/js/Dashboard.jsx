@@ -8,63 +8,69 @@ import {
   Route
 } from 'react-router-dom';
 import $ from 'jquery';
+import { Add } from "@material-ui/icons";
+import { Button } from '@material-ui/core';
 
 class Dashboard extends React.Component {
-  constructor(){
+  constructor() {
     super();
-    
+
     this.handleAddProject = this.handleAddProject.bind(this);
     this.addNewProject = this.addNewProject.bind(this);
   }
 
-  handleAddProject(){
+  handleAddProject() {
     this.projectDialog.show();
   }
 
-  addNewProject(project){
+  addNewProject(project) {
     if (!project.name) return (new $.Deferred()).reject("Name field is required");
 
     return $.ajax({
-          url: `/api/projects/`,
-          type: 'POST',
-          data: {
-            name: project.name,
-            description: project.descr
-          }
-      }).done(() => {
-        this.projectList.refresh();
-      });
+      url: `/api/projects/`,
+      type: 'POST',
+      data: {
+        name: project.name,
+        description: project.descr
+      }
+    }).done(() => {
+      this.projectList.refresh();
+    });
   }
 
   render() {
     const projectList = ({ location, history }) => {
       let q = Utils.queryParams(location),
-          page = parseInt(q.page !== undefined ? q.page : 1);
+        page = parseInt(q.page !== undefined ? q.page : 1);
 
       return <ProjectList
-                source={`/api/projects/?ordering=-created_at&page=${page}`}
-                ref={(domNode) => { this.projectList = domNode; }} 
-                currentPage={page}
-                history={history}
-                />;
+        source={`/api/projects/?ordering=-created_at&page=${page}`}
+        ref={(domNode) => { this.projectList = domNode; }}
+        currentPage={page}
+        history={history}
+      />;
     };
 
     return (
       <Router basename="/dashboard">
         <div>
-          <div className="text-right add-button">
-            <button type="button" 
-                    className="btn btn-primary btn-sm"
-                    onClick={this.handleAddProject}>
+         <div className="text-right add-button">
+           {/*   <button type="button"
+              className="btn btn-primary btn-sm"
+              onClick={this.handleAddProject}>
               <i className="glyphicon glyphicon-plus"></i>
               Add Project
-            </button>
+            </button> */}
+
+            <Button variant="fab" color="primary" size="medium" aria-label="add" onClick={()=>this.handleAddProject()}>
+              <Add/>
+            </Button>
           </div>
 
-          <EditProjectDialog 
+          <EditProjectDialog
             saveAction={this.addNewProject}
             ref={(domNode) => { this.projectDialog = domNode; }}
-            />
+          />
           <Route path="/" component={projectList} />
         </div>
       </Router>
@@ -72,28 +78,28 @@ class Dashboard extends React.Component {
   }
 }
 
-$(function(){
-    $("[data-dashboard]").each(function(){
-        window.ReactDOM.render(<Dashboard/>, $(this).get(0));
+$(function () {
+  $("[data-dashboard]").each(function () {
+    window.ReactDOM.render(<Dashboard />, $(this).get(0));
+  });
+
+
+  // Warn users if there's any sort of work in progress before
+  // they press the back button on the browser
+  // Yes it's a hack. No we're not going to track state in React just
+  // for this.
+  window.onbeforeunload = function () {
+    let found = false;
+    $(".progress-bar:visible").each(function () {
+      try {
+        let value = parseFloat($(this).text());
+        if (!isNaN(value) && value > 0 && value < 100) found = true;
+      } catch (e) {
+        // Do nothing
+      }
     });
-
-
-    // Warn users if there's any sort of work in progress before
-    // they press the back button on the browser
-    // Yes it's a hack. No we're not going to track state in React just
-    // for this.
-    window.onbeforeunload = function() {
-        let found = false; 
-        $(".progress-bar:visible").each(function(){ 
-            try{
-                let value = parseFloat($(this).text());
-                if (!isNaN(value) && value > 0 && value < 100) found = true;
-            }catch(e){
-                // Do nothing
-            }
-        });
-        return found ? "Your changes will be lost. Are you sure you want to leave?" : undefined; 
-    };
+    return found ? "Your changes will be lost. Are you sure you want to leave?" : undefined;
+  };
 });
 
 export default Dashboard;
