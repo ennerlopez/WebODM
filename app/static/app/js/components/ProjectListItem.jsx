@@ -17,7 +17,7 @@ import $ from 'jquery';
 import { Collapse, Avatar, Card, CardHeader, CardContent, withStyles, Grid, Tab, Tabs, IconButton, Badge } from '@material-ui/core';
 import classnames from 'classnames';
 import tasksCardStyle from "../jss/material-dashboard-react/tasksCardStyle";
-import { ExpandMore, Edit, BugReport, Code, Cloud, Public, CloudUpload, CloudOff, Collections } from "@material-ui/icons";
+import { Map, ExpandMore, Edit, BugReport, Code, Cloud, Public, CloudUpload, CloudOff, Collections } from "@material-ui/icons";
 import { cardActions } from '../jss/material-dashboard-react';
 const styles = theme => ({
   root: {
@@ -35,6 +35,12 @@ const styles = theme => ({
     },
   },
 });
+
+
+const createColoredBadge = (color) =>
+  withStyles(() => ({ badge: { backgroundColor: color, color: "#FFFF",fontSize:12 } }))(Badge);
+const GreenBadge = createColoredBadge('#28A745');
+const RedBadge = createColoredBadge('#DC3545');
 
 
 class ProjectListItem extends React.Component {
@@ -194,7 +200,7 @@ class ProjectListItem extends React.Component {
             editing: true,
             totalCount: this.state.upload.totalCount + files.length
           });
-          this.setState({expanded:true});
+          this.setState({ expanded: true });
         })
         .on("transformcompleted", (file, total) => {
           if (this.dz._resizeMap) this.dz._resizeMap[file.name] = this.dz._taskInfo.resizeSize / Math.max(file.width, file.height);
@@ -286,6 +292,7 @@ class ProjectListItem extends React.Component {
   }
 
   cancelUpload(e) {
+
     this.dz.removeAllFiles(true);
   }
 
@@ -321,8 +328,15 @@ class ProjectListItem extends React.Component {
   }
 
   handleTaskCanceled = () => {
+
+    let numTasks = this.state.data.tasks.length;
+   
+  
     this.dz.removeAllFiles(true);
     this.resetUploadState();
+    if(numTasks===0){
+      this.toggleMaps();
+    }
   }
 
   handleUpload = () => {
@@ -429,15 +443,25 @@ class ProjectListItem extends React.Component {
                   </IconButton>
                 }
 
-                <IconButton style={{ color: '#57595C', verticalAlign: "center" }} className={classes.button} onClick={() => this.viewMap()} aria-label="Map">
+                {/* <IconButton style={{ color: '#57595C', verticalAlign: "center" }} className={classes.button} onClick={() => this.viewMap()} aria-label="Map">
                   <Public />
+                </IconButton> */}
+
+
+
+                <IconButton style={{ color: '#57595C', verticalAlign: "center" }} className={classes.button} onClick={() => numTasks>0? this.viewMap():0} aria-label="Map">
+           
+
+                  <GreenBadge badgeContent={numTasks}>
+                  <Public />
+                    </GreenBadge>
                 </IconButton>
 
                 <IconButton
                   className={classnames(classes.expand, {
                     [classes.expandOpen]: this.state.expanded,
                   })}
-                  onClick={() => this.toggleMaps()}
+                  onClick={() => numTasks > 0 ? this.toggleMaps() : 0}
                   aria-expanded={this.state.expanded}
                   aria-label="Show more"
                 >
@@ -456,7 +480,7 @@ class ProjectListItem extends React.Component {
 
 
 
-              <div >
+              <div>
 
 
 
@@ -492,17 +516,15 @@ class ProjectListItem extends React.Component {
 
 
                   <div className="row project-links">
-                    {numTasks > 0 ?
+                    {/* {numTasks > 0 ?
                       <span>
-                        <Badge badgeContent={numTasks} color="primary">
-                          {/* <i className='fa fa-tasks'>
-                    </i>   */}
-                          <Collections />
-                        </Badge><a href="javascript:void(0);" onClick={this.toggleTaskList}>
+                               <i className='fa fa-tasks'>
+                        </i>
+                        <a href="javascript:void(0);" onClick={this.toggleTaskList}>
                           Maps <i className={'fa fa-caret-' + (this.state.showTaskList ? 'down' : 'right')}></i>
                         </a>
                       </span>
-                      : ""}
+                      : ""} */}
 
                     {/* <i className='fa fa-edit'>
                 </i> <a href="javascript:void(0);" onClick={this.handleEditProject}> Edit
@@ -540,14 +562,20 @@ class ProjectListItem extends React.Component {
                     />
                     : ""}
 
-                  {this.state.showTaskList ?
+                  {/* {this.state.showTaskList ?
+                    <TaskList
+                      ref={this.setRef("taskList")}
+                      source={`/api/projects/${data.id}/tasks/?ordering=-created_at`}
+                      onDelete={this.taskDeleted}
+                      history={this.props.history}
+                    /> : ""} */}
+              {numTasks > 0 ?
                     <TaskList
                       ref={this.setRef("taskList")}
                       source={`/api/projects/${data.id}/tasks/?ordering=-created_at`}
                       onDelete={this.taskDeleted}
                       history={this.props.history}
                     /> : ""}
-
                 </div>
 
 
@@ -562,7 +590,6 @@ class ProjectListItem extends React.Component {
             </CardContent>
 
           </Collapse>
-
 
         </Card>
 
