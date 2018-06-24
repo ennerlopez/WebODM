@@ -8,7 +8,7 @@ import EditTaskPanel from './EditTaskPanel';
 import AssetDownloadButtons from './AssetDownloadButtons';
 import HistoryNav from '../classes/HistoryNav';
 import PropTypes from 'prop-types';
-
+import List from './AssetDownloadList'
 class TaskListItem extends React.Component {
   static propTypes = {
       history: PropTypes.object.isRequired,
@@ -460,7 +460,7 @@ class TaskListItem extends React.Component {
                   <strong>Status: </strong> {status}<br/>
                 </div>
               : ""}
-              {Array.isArray(task.options) ?
+              {Array.isArray(task.options) && false ?
                  <div className="labels">
                   <strong>Options: </strong> {this.optionsToList(task.options)}<br/>
                 </div>
@@ -472,14 +472,15 @@ class TaskListItem extends React.Component {
 
             </div>
             <div className="col-md-8">
-              <Console 
+                <List task={this.state.task}/>
+              {/* <Console 
                 source={this.consoleOutputUrl} 
                 refreshInterval={this.shouldRefresh() ? 3000 : undefined} 
                 autoscroll={true}
                 height={200} 
                 ref={domNode => this.console = domNode}
                 onAddLines={this.checkForCommonErrors}
-                />
+                /> */}
 
               {showMemoryErrorWarning ? 
               <div className="task-warning"><i className="fa fa-support"></i> <span>It looks like your processing node ran out of memory. If you are using docker, make sure that your docker environment has <a href={memoryErrorLink} target="_blank">enough RAM allocated</a>. Alternatively, make sure you have enough physical RAM, reduce the number of images, make your images smaller, or tweak the task's <a href="javascript:void(0);" onClick={this.startEditing}>options</a>.</span></div> : ""}

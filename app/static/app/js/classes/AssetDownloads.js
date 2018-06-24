@@ -31,16 +31,16 @@ class AssetDownloadSeparator extends AssetDownload{
 const api = {
   all: function() {
     return [
-      new AssetDownload("Orthophoto (GeoTIFF)","orthophoto.tif","fa fa-map-o"),
-      new AssetDownload("Orthophoto (PNG)","orthophoto.png","fa fa-picture-o"),
-      new AssetDownload("Terrain Model (GeoTIFF)","dtm.tif","fa fa-area-chart"),
-      new AssetDownload("Surface Model (GeoTIFF)","dsm.tif","fa fa-area-chart"),
-      new AssetDownload("Point Cloud (LAS)","georeferenced_model.las","fa fa-cube"),
-      new AssetDownload("Point Cloud (PLY)","georeferenced_model.ply","fa fa-cube"),
-      new AssetDownload("Point Cloud (CSV)","georeferenced_model.csv","fa fa-cube"),
-      new AssetDownload("Textured Model","textured_model.zip","fa fa-connectdevelop"),
+      new AssetDownload("Orthophoto (GeoTIFF)","orthophoto.tif","Map"),
+      new AssetDownload("Orthophoto (PNG)","orthophoto.png","Image"),
+      new AssetDownload("Terrain Model (GeoTIFF)","dtm.tif","FilterHdr"),
+      new AssetDownload("Surface Model (GeoTIFF)","dsm.tif","FilterHdr"),
+      new AssetDownload("Point Cloud (LAS)","georeferenced_model.las","BlurOn"),
+      new AssetDownload("Point Cloud (PLY)","georeferenced_model.ply","BlurOn"),
+      new AssetDownload("Point Cloud (CSV)","georeferenced_model.csv","BlurOn"),
+      new AssetDownload("Textured Model","textured_model.zip","Gradient"),
       new AssetDownloadSeparator(),
-      new AssetDownload("All Assets","all.zip","fa fa-file-archive-o")
+      new AssetDownload("All Assets","all.zip","Archive")
     ];
   },
 
