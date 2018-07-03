@@ -7,23 +7,23 @@ const QUEUED = 10,
 let statusCodes = {
     [QUEUED]: {
         descr: "Queued",
-        icon: "fa fa-hourglass-3"
+        icon: "fa fa-hourglass-3 fa-2x"
     },
     [RUNNING]: {
         descr: "Running",
-        icon: "fa fa-gear fa-spin fa-fw"
+        icon: "fa fa-gear fa-spin fa-fw fa-2x"
     },
     [FAILED]: {
         descr: "Failed",
-        icon: "fa fa-frown-o"
+        icon: "fa fa-frown-o fa-2x"
     },
     [COMPLETED]: {
         descr: "Completed",
-        icon: "fa fa-check"
+        icon: "fa fa-check fa-2x"
     },
     [CANCELED]: {
         descr: "Canceled",
-        icon: "fa fa-ban"
+        icon: "fa fa-ban fa-2x"
     }
 };
 
@@ -41,7 +41,7 @@ export default {
 
     icon: function(statusCode){
       if (statusCodes[statusCode]) return statusCodes[statusCode].icon;
-      else return "fa fa-gear fa-spin";
+      else return "fa-5x fa-gear fa-spin";
     }
 };
 
