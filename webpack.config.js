@@ -6,7 +6,8 @@ let LiveReloadPlugin = require('webpack-livereload-plugin');
 
 module.exports = {
   context: __dirname,
-
+ 
+  devtool: "#eval-source-map",
   entry: {
     main: ['./app/static/app/js/main.jsx'],
     Console: ['./app/static/app/js/Console.jsx'],
@@ -25,7 +26,8 @@ module.exports = {
     new BundleTracker({filename: './webpack-stats.json'}),
     new ExtractTextPlugin('css/[name]-[hash].css', {
         allChunks: true
-    })
+    }),
+    new webpack.LoaderOptionsPlugin({debug:true})
   ],
 
   module: {
